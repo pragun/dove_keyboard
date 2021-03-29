@@ -28,7 +28,7 @@
 #include "circular_buffers.hpp"
 #include "key_value_tree.hpp"
 #include "rpc_impl.hpp"
-
+#include "matrix.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -161,6 +161,37 @@ uint32_t read_keypress_time_ms(){
 	return cnt/10;
 }
 
+extern "C" uint32_t timer_read32();
+uint32_t timer_read32(){
+	return  __HAL_TIM_GetCounter(&htim5);
+}
+
+extern "C" void _delay_us(uint16_t us);
+void _delay_us(uint16_t us) // microseconds
+{
+    uint16_t startTick  = __HAL_TIM_GetCounter(&htim11);
+	uint16_t targetTick = startTick + us;
+
+    // Must check if target tick is out of bounds and overflowed
+    if (targetTick > startTick) {
+        // Not overflowed
+        while (__HAL_TIM_GetCounter(&htim11) < targetTick);
+    } else {
+        // Overflowed
+        while (__HAL_TIM_GetCounter(&htim11) > startTick || __HAL_TIM_GetCounter(&htim11) < targetTick);
+    }
+}
+
+extern "C" uint32_t timer_elapsed32(uint32_t initial_time);
+uint32_t timer_elapsed32(uint32_t initial_time){
+	uint32_t cnt = __HAL_TIM_GetCounter(&htim5);
+	if (initial_time <= cnt){
+		return (cnt - initial_time);
+	}else{
+		return (0xFFFFFFFF - initial_time) + cnt;
+	}
+}
+
 MouseEventHandler mouse_event_handler(&stop_keypress_timer, &start_keypress_timer, &read_keypress_time_ms);
 
 RPC_Impl* hid_rpc_obj_ptr = NULL;
@@ -222,7 +253,9 @@ void timer10_period_elapsed(TIM_HandleTypeDef *htim){
 
 void timer9_period_elapsed(TIM_HandleTypeDef *htim){
 	tim9_count ++;
-	mouse_event_handler.hid_poll_interval_timer_callback();
+	//mouse_event_handler.hid_poll_interval_timer_callback();
+	matrix_scan();
+	matrix_print();
 }
 
 
@@ -248,7 +281,6 @@ void Enable_Flash_Interrupts_NVIC(){
 	  HAL_NVIC_SetPriority(FLASH_IRQn, 0, 0);
 	  HAL_NVIC_EnableIRQ(FLASH_IRQn);
 }
-
 
 void update_key_value_mouse_event_handler(const uint32_t key, const uint8_t size, const uint8_t* data){
 	mouse_event_handler.register_config_entry(key, size, data);
@@ -307,7 +339,7 @@ int main(void)
   //MX_WWDG_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_TIM_RegisterCallback(&htim11,HAL_TIM_PERIOD_ELAPSED_CB_ID, timer11_period_elapsed);
+  //HAL_TIM_RegisterCallback(&htim11,HAL_TIM_PERIOD_ELAPSED_CB_ID, timer11_period_elapsed);
   HAL_TIM_RegisterCallback(&htim10,HAL_TIM_PERIOD_ELAPSED_CB_ID, timer10_period_elapsed);
   HAL_TIM_RegisterCallback(&htim9,HAL_TIM_PERIOD_ELAPSED_CB_ID, timer9_period_elapsed);
 
@@ -321,6 +353,8 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim11);
   HAL_TIM_Base_Start_IT(&htim10);
   HAL_TIM_Base_Start_IT(&htim9);
+
+  start_keypress_timer();
 
   /* USER CODE END 2 */
   HAL_UART_Receive_DMA(&huart2, rx_buf, UART_RX_BUF_SIZE);
@@ -539,10 +573,10 @@ static void MX_TIM5_Init(void)
 
   /* USER CODE END TIM5_Init 1 */
   htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 8400;
+  htim5.Init.Prescaler = 21000;
   htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim5.Init.Period = 0xFFFFFFFF;
-  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
   htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
   {
@@ -647,9 +681,9 @@ static void MX_TIM11_Init(void)
 
   /* USER CODE END TIM11_Init 1 */
   htim11.Instance = TIM11;
-  htim11.Init.Prescaler = 8400;
+  htim11.Init.Prescaler = 84;
   htim11.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim11.Init.Period = keep_alive_period;
+  htim11.Init.Period = 0xFFFFFFFF;
   htim11.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim11.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim11) != HAL_OK)
@@ -757,21 +791,41 @@ static void MX_DMA_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+	  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
+	  /* GPIO Ports Clock Enable */
+	  __HAL_RCC_GPIOC_CLK_ENABLE();
+	  __HAL_RCC_GPIOA_CLK_ENABLE();
+	  __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin : PA8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15
+	                          |GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6
+	                          |GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9, GPIO_PIN_RESET);
 
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+	  /*Configure GPIO pins : PC13 PC14 PC15 */
+	  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	  /*Configure GPIO pins : PB2 PB10 */
+	  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_10;
+	  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	  GPIO_InitStruct.Pull = GPIO_NOPULL;
+	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+	  /*Configure GPIO pins : PB12 PB13 PB14 PB15
+	                           PB3 PB4 PB5 PB6
+	                           PB7 PB8 PB9 */
+	  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15
+	                          |GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6
+	                          |GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
+	  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 
