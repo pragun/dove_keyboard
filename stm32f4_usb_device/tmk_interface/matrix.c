@@ -24,8 +24,8 @@ static uint32_t debouncing_time = 0;
 const GPIO_TypeDef* col_ports[] = {GPIOB,GPIOB,GPIOB,GPIOB,GPIOB,GPIOB,GPIOB,GPIOB,GPIOB,GPIOB,GPIOB};
 const uint16_t col_pins[] = {GPIO_PIN_3, GPIO_PIN_4, GPIO_PIN_5, GPIO_PIN_6, GPIO_PIN_7, GPIO_PIN_8, GPIO_PIN_9, GPIO_PIN_12, GPIO_PIN_13, GPIO_PIN_14, GPIO_PIN_15};
 
-const GPIO_TypeDef* row_ports[] = {GPIOB,GPIOB,GPIOC,GPIOC,GPIOC};
-const uint16_t row_pins[] = {GPIO_PIN_2, GPIO_PIN_10, GPIO_PIN_13, GPIO_PIN_14, GPIO_PIN_15};
+const GPIO_TypeDef* row_ports[] = {GPIOC,GPIOC,GPIOC,GPIOB,GPIOB};
+const uint16_t row_pins[] = {GPIO_PIN_14, GPIO_PIN_15, GPIO_PIN_13,GPIO_PIN_10,GPIO_PIN_2};
 
 void matrix_init(void)
 {
@@ -40,13 +40,15 @@ uint8_t matrix_scan(void)
         matrix_row_t data = 0;
 
         //  strobe row
-        HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_SET);
+        HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_RESET);
         wait_us(1); // need wait to settle pin state
 
         // read column data
         for (int col = 0; col < MATRIX_COLS; col++) {
         	GPIO_PinState ps = HAL_GPIO_ReadPin(col_ports[col],col_pins[col]);
-            data |= (ps<<col);
+        	if(ps == GPIO_PIN_RESET){
+        		data |= (1<<col);
+        	}
         }
 
         if (matrix_debouncing[row] != data) {
@@ -56,7 +58,7 @@ uint8_t matrix_scan(void)
        }
 
        // un-strobe column
-        HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_SET);
     }
 
     if (debouncing && timer_elapsed32(debouncing_time) > DEBOUNCE) {
@@ -80,16 +82,16 @@ matrix_row_t matrix_get_row(uint8_t row)
 
 void matrix_print(void)
 {
-    printf("\nRow data:\n");
+    printf("\nRow data:");
     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
-        printf("%02X: ");
-        matrix_row_t data = matrix_get_row(row);
-        for (int col = 0; col < MATRIX_COLS; col++) {
-            if (data & (1<<col))
-                printf("1");
-            else
-                printf("0");
-        }
-        printf("\n");
+    	matrix_row_t data = matrix_get_row(row);
+        printf("%02X ",data);
+//        for (int col = 0; col < MATRIX_COLS; col++) {
+//            if (data & (1<<col))
+//                printf("1");
+//            else
+//                printf("0");
+//        }
     }
+    printf("\n");
 }

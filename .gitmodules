@@ -1,3 +1,9 @@
 [submodule "stm32f4_usb_device/tmk_core"]
 	path = stm32f4_usb_device/tmk_core
 	url = https://github.com/pragun/tmk_core
+[submodule "chibios_workspace/tmk_test/tmk_core"]
+	path = chibios_workspace/tmk_test/tmk_core
+	url = https://github.com/pragun/tmk_core
+[submodule "chibios_workspace/ChibiOS"]
+	path = chibios_workspace/ChibiOS
+	url = https://github.com/ChibiOS/ChibiOS

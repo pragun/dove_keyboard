@@ -1,25 +1,40 @@
-16:07:24 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
+20:49:31 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
 make -j8 all 
-arm-none-eabi-g++ "../Core/Src/main.cpp" -mcpu=cortex-m4 -g3 -DUSE_HAL_DRIVER -DSTM32F401xC -DDEBUG -c -I../USB_DEVICE/Target -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../USB_DEVICE/App -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc -I../circular_buffer -I../flash_key_value_tree -I../rpc -I../utils -I../mouse -I../tmk_core/common -I../tmk_interface -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -std=c++17 -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../mouse/mouse_event_handler.hpp:5:0,
-                 from ../Core/Src/main.cpp:27:
-../mouse/reporting_functions.h:55:1: warning: multi-line comment [-Wcomment]
- //#define REPORT_PARAMS_STRUCT(X) template<> \
- ^
-../Core/Src/main.cpp: In function 'int main()':
-../Core/Src/main.cpp:370:12: warning: unused variable 'pI' [-Wunused-variable]
-   uint32_t pI = 0;
-            ^~
-../Core/Src/main.cpp:371:12: warning: unused variable 'Data' [-Wunused-variable]
-   uint64_t Data = 0x00000000FFFFFFFF;
-            ^~~~
-../Core/Src/main.cpp: At global scope:
-../Core/Src/main.cpp:736:13: warning: 'void MX_WWDG_Init()' defined but not used [-Wunused-function]
- static void MX_WWDG_Init(void)
-             ^~~~~~~~~~~~
-../Core/Src/main.cpp:498:13: warning: 'void MX_IWDG_Init()' defined but not used [-Wunused-function]
- static void MX_IWDG_Init(void)
-             ^~~~~~~~~~~~
+arm-none-eabi-gcc "../tmk_interface/matrix.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F401xC -DDEBUG -c -I../USB_DEVICE/Target -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../USB_DEVICE/App -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc -I../circular_buffer -I../rpc -I../utils -I../mouse -I../tmk_core/common -I../tmk_interface -include../tmk_interface/config.h -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"tmk_interface/matrix.d" -MT"tmk_interface/matrix.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "tmk_interface/matrix.o"
+../tmk_interface/matrix.c: In function 'matrix_scan':
+../tmk_interface/matrix.c:43:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_RESET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:48:46: warning: passing argument 1 of 'HAL_GPIO_ReadPin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+          GPIO_PinState ps = HAL_GPIO_ReadPin(col_ports[col],col_pins[col]);
+                                              ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:235:15: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+               ^~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:61:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_SET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c: In function 'matrix_print':
+../tmk_interface/matrix.c:85:5: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+     printf("\nRow data:");
+     ^~~~~~
+../tmk_interface/matrix.c:85:5: warning: incompatible implicit declaration of built-in function 'printf'
+../tmk_interface/matrix.c:85:5: note: include '<stdio.h>' or provide a declaration of 'printf'
 arm-none-eabi-g++ -o "stm32f4_usb_device.elf" @"objects.list"   -mcpu=cortex-m4 -T"F:\dove_keyboard\stm32f4_usb_device\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4_usb_device.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 Finished building target: stm32f4_usb_device.elf
  
@@ -27,24 +42,187 @@ arm-none-eabi-objdump -h -S  stm32f4_usb_device.elf  > "stm32f4_usb_device.list"
 arm-none-eabi-objcopy  -O binary  stm32f4_usb_device.elf  "stm32f4_usb_device.bin"
 arm-none-eabi-size   stm32f4_usb_device.elf 
    text	   data	    bss	    dec	    hex	filename
-  72836	    712	  55852	 129400	  1f978	stm32f4_usb_device.elf
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
 Finished building: default.size.stdout
  
 Finished building: stm32f4_usb_device.bin
  
 Finished building: stm32f4_usb_device.list
  
-16:07:28 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
+20:49:35 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
 make -j8 all 
+arm-none-eabi-g++ -o "stm32f4_usb_device.elf" @"objects.list"   -mcpu=cortex-m4 -T"F:\dove_keyboard\stm32f4_usb_device\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4_usb_device.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: stm32f4_usb_device.elf
+ 
 arm-none-eabi-size   stm32f4_usb_device.elf 
    text	   data	    bss	    dec	    hex	filename
-  72836	    712	  55852	 129400	  1f978	stm32f4_usb_device.elf
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
 Finished building: default.size.stdout
  
-16:07:29 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
+20:54:57 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
+make -j8 all 
+arm-none-eabi-gcc "../tmk_interface/matrix.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F401xC -DDEBUG -c -I../USB_DEVICE/Target -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../USB_DEVICE/App -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc -I../circular_buffer -I../rpc -I../utils -I../mouse -I../tmk_core/common -I../tmk_interface -include../tmk_interface/config.h -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"tmk_interface/matrix.d" -MT"tmk_interface/matrix.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "tmk_interface/matrix.o"
+../tmk_interface/matrix.c: In function 'matrix_scan':
+../tmk_interface/matrix.c:43:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_RESET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:48:46: warning: passing argument 1 of 'HAL_GPIO_ReadPin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+          GPIO_PinState ps = HAL_GPIO_ReadPin(col_ports[col],col_pins[col]);
+                                              ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:235:15: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+               ^~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:61:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_SET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c: In function 'matrix_print':
+../tmk_interface/matrix.c:85:5: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+     printf("\nRow data:");
+     ^~~~~~
+../tmk_interface/matrix.c:85:5: warning: incompatible implicit declaration of built-in function 'printf'
+../tmk_interface/matrix.c:85:5: note: include '<stdio.h>' or provide a declaration of 'printf'
+arm-none-eabi-g++ -o "stm32f4_usb_device.elf" @"objects.list"   -mcpu=cortex-m4 -T"F:\dove_keyboard\stm32f4_usb_device\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4_usb_device.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: stm32f4_usb_device.elf
+ 
+arm-none-eabi-objdump -h -S  stm32f4_usb_device.elf  > "stm32f4_usb_device.list"
+arm-none-eabi-objcopy  -O binary  stm32f4_usb_device.elf  "stm32f4_usb_device.bin"
+arm-none-eabi-size   stm32f4_usb_device.elf 
+   text	   data	    bss	    dec	    hex	filename
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
+Finished building: default.size.stdout
+ 
+Finished building: stm32f4_usb_device.bin
+ 
+Finished building: stm32f4_usb_device.list
+ 
+20:55:52 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
+make -j8 all 
+arm-none-eabi-gcc "../tmk_interface/matrix.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F401xC -DDEBUG -c -I../USB_DEVICE/Target -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../USB_DEVICE/App -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc -I../circular_buffer -I../rpc -I../utils -I../mouse -I../tmk_core/common -I../tmk_interface -include../tmk_interface/config.h -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"tmk_interface/matrix.d" -MT"tmk_interface/matrix.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "tmk_interface/matrix.o"
+../tmk_interface/matrix.c: In function 'matrix_scan':
+../tmk_interface/matrix.c:43:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_RESET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:48:46: warning: passing argument 1 of 'HAL_GPIO_ReadPin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+          GPIO_PinState ps = HAL_GPIO_ReadPin(col_ports[col],col_pins[col]);
+                                              ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:235:15: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+               ^~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:61:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_SET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c: In function 'matrix_print':
+../tmk_interface/matrix.c:85:5: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+     printf("\nRow data:");
+     ^~~~~~
+../tmk_interface/matrix.c:85:5: warning: incompatible implicit declaration of built-in function 'printf'
+../tmk_interface/matrix.c:85:5: note: include '<stdio.h>' or provide a declaration of 'printf'
+arm-none-eabi-g++ -o "stm32f4_usb_device.elf" @"objects.list"   -mcpu=cortex-m4 -T"F:\dove_keyboard\stm32f4_usb_device\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4_usb_device.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: stm32f4_usb_device.elf
+ 
+arm-none-eabi-objdump -h -S  stm32f4_usb_device.elf  > "stm32f4_usb_device.list"
+arm-none-eabi-objcopy  -O binary  stm32f4_usb_device.elf  "stm32f4_usb_device.bin"
+arm-none-eabi-size   stm32f4_usb_device.elf 
+   text	   data	    bss	    dec	    hex	filename
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
+Finished building: default.size.stdout
+ 
+Finished building: stm32f4_usb_device.bin
+ 
+Finished building: stm32f4_usb_device.list
+ 
+21:14:50 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
+make -j8 all 
+arm-none-eabi-gcc "../tmk_interface/matrix.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F401xC -DDEBUG -c -I../USB_DEVICE/Target -I../Drivers/CMSIS/Include -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Core/Inc -I../USB_DEVICE/App -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc -I../circular_buffer -I../rpc -I../utils -I../mouse -I../tmk_core/common -I../tmk_interface -include../tmk_interface/config.h -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"tmk_interface/matrix.d" -MT"tmk_interface/matrix.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "tmk_interface/matrix.o"
+../tmk_interface/matrix.c: In function 'matrix_scan':
+../tmk_interface/matrix.c:43:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_RESET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:48:46: warning: passing argument 1 of 'HAL_GPIO_ReadPin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+          GPIO_PinState ps = HAL_GPIO_ReadPin(col_ports[col],col_pins[col]);
+                                              ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:235:15: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+               ^~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c:61:27: warning: passing argument 1 of 'HAL_GPIO_WritePin' discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+         HAL_GPIO_WritePin(row_ports[row],row_pins[row],GPIO_PIN_SET);
+                           ^~~~~~~~~
+In file included from ../Core/Inc/stm32f4xx_hal_conf.h:244:0,
+                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:30,
+                 from ../tmk_interface/matrix.c:4:
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h:236:6: note: expected 'GPIO_TypeDef * {aka struct <anonymous> *}' but argument is of type 'const GPIO_TypeDef * {aka const struct <anonymous> *}'
+ void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);
+      ^~~~~~~~~~~~~~~~~
+../tmk_interface/matrix.c: In function 'matrix_print':
+../tmk_interface/matrix.c:85:5: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+     printf("\nRow data:");
+     ^~~~~~
+../tmk_interface/matrix.c:85:5: warning: incompatible implicit declaration of built-in function 'printf'
+../tmk_interface/matrix.c:85:5: note: include '<stdio.h>' or provide a declaration of 'printf'
+arm-none-eabi-g++ -o "stm32f4_usb_device.elf" @"objects.list"   -mcpu=cortex-m4 -T"F:\dove_keyboard\stm32f4_usb_device\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4_usb_device.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: stm32f4_usb_device.elf
+ 
+arm-none-eabi-objdump -h -S  stm32f4_usb_device.elf  > "stm32f4_usb_device.list"
+arm-none-eabi-objcopy  -O binary  stm32f4_usb_device.elf  "stm32f4_usb_device.bin"
+arm-none-eabi-size   stm32f4_usb_device.elf 
+   text	   data	    bss	    dec	    hex	filename
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
+Finished building: default.size.stdout
+ 
+Finished building: stm32f4_usb_device.bin
+ 
+Finished building: stm32f4_usb_device.list
+ 
+21:14:52 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
 make -j8 all 
 arm-none-eabi-size   stm32f4_usb_device.elf 
    text	   data	    bss	    dec	    hex	filename
-  72836	    712	  55852	 129400	  1f978	stm32f4_usb_device.elf
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
+Finished building: default.size.stdout
+ 
+10:51:55 **** Build of configuration Debug for project stm32f4_usb_device ****
+make -j8 all 
+arm-none-eabi-size   stm32f4_usb_device.elf 
+   text	   data	    bss	    dec	    hex	filename
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
 Finished building: default.size.stdout
  

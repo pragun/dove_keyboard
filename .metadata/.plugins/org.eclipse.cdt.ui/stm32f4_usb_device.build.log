@@ -1,10 +1,10 @@
-16:07:29 **** Incremental Build of configuration Debug for project stm32f4_usb_device ****
+10:51:55 **** Build of configuration Debug for project stm32f4_usb_device ****
 make -j8 all 
 arm-none-eabi-size   stm32f4_usb_device.elf 
    text	   data	    bss	    dec	    hex	filename
-  72836	    712	  55852	 129400	  1f978	stm32f4_usb_device.elf
+  72800	    712	  55852	 129364	  1f954	stm32f4_usb_device.elf
 Finished building: default.size.stdout
  
 
-16:07:29 Build Finished. 0 errors, 0 warnings. (took 269ms)
+10:51:56 Build Finished. 0 errors, 0 warnings. (took 513ms)
 
