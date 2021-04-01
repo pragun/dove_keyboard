@@ -79,7 +79,7 @@
 		<link>
 			<name>board</name>
 			<type>2</type>
-			<location>C:/Users/Pragun/Downloads/ChibiStudio_Windows_2020-04/ChibiStudio/workspace203/tmk_test/board</location>
+			<location>F:/dove_keyboard/chibios_workspace/tmk_test/board</location>
 		</link>
 		<link>
 			<name>os</name>
