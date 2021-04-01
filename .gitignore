@@ -1,2 +1,5 @@
 /.metadata/
+/STm32_407_Test/
 ~*
+*.dep/
+*.d
