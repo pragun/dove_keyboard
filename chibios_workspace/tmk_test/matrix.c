@@ -41,6 +41,11 @@ static void init_cols(void);
 static void unselect_rows(void);
 static void select_row(uint8_t row);
 
+stm32_gpio_t* row_ports1[] = {GPIOC,GPIOC,GPIOC,GPIOC,GPIOC};
+uint16_t row_pins1[] = {GPIOC_PIN0,GPIOC_PIN1,GPIOC_PIN2,GPIOC_PIN3,GPIOC_PIN4};
+
+stm32_gpio_t* row_ports2[] = {GPIOD,GPIOD,GPIOD,GPIOD,GPIOD};
+uint16_t row_pins2[] = {GPIOD_PIN0,GPIOD_PIN1,GPIOD_PIN2,GPIOD_PIN3,GPIOD_PIN4};
 
 inline
 uint8_t matrix_rows(void)
@@ -91,7 +96,7 @@ uint8_t matrix_scan(void)
 {
     for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
         select_row(i);
-        wait_us(30);  // without this wait read unstable value.
+        wait_us(5);  // without this wait read unstable value.
         matrix_row_t cols = read_cols();
         if (matrix_debouncing[i] != cols) {
             matrix_debouncing[i] = cols;
@@ -162,11 +167,17 @@ static matrix_row_t read_cols(void)
 static void unselect_rows(void)
 {
     // palSetPadMode(GPIOA, GPIOA_PIN10, PAL_MODE_INPUT); // hi-Z
+  for(uint8_t i=0; i<MATRIX_ROWS; i++){
+    palSetPad(row_ports1[i],row_pins1[i]);
+    palSetPad(row_ports2[i],row_pins2[i]);
+  }
 }
 
 static void select_row(uint8_t row)
 {
-    (void)row;
+    //(void)row;
+    palClearPad(row_ports1[row],row_pins1[row]);
+    palClearPad(row_ports2[row],row_pins2[row]);
     // Output low to select
     // switch (row) {
     //     case 0:

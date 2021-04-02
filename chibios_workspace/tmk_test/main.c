@@ -104,8 +104,7 @@ static THD_FUNCTION(blinkerThread, arg) {
   chRegSetThreadName("blinkLED");
   while(true) {
     {
-      sdWrite(&SD2, (int8_t*)"USART2 Initialized.\n", 20);
-      printf("Check printf.\n");
+      printf("LED printf.\n");
       palSetPad(GPIOA, GPIOA_LED);       /* Orange.  */
       chThdSleepMilliseconds(300);
       palClearPad(GPIOA, GPIOA_LED);       /* Orange.  */
@@ -138,11 +137,10 @@ int main(void) {
   sdStart(&SD2, NULL);
   palSetPadMode(GPIOA, 2, PAL_MODE_ALTERNATE(7));
   palSetPadMode(GPIOA, 3, PAL_MODE_ALTERNATE(7));
-
-  sdWrite(&SD2, (int8_t*)"USART2 Initialized.\n", 20);
-  chThdSleepMilliseconds(10);
   init_printf(NULL,sendchar_uart);
 
+  printf("USART2 Initialized.\n");
+  chThdSleepMilliseconds(10);
 
   static const GPTConfig gpt8cfg = {
     100000, // 1 MHz timer clock.
@@ -172,7 +170,7 @@ int main(void) {
    * before the USB is completely ready, which sometimes causes
    * HardFaults.
    */
-  chThdSleepMilliseconds(50);
+//  chThdSleepMilliseconds(50);
 
   printf("USB configured.\n");
 
