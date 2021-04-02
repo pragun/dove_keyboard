@@ -106,12 +106,12 @@ static THD_FUNCTION(blinkerThread, arg) {
     {
       printf("%03d ", blinkLed);
       blinkLed += 1;
-      matrix_scan();
-      matrix_print();
+//      matrix_scan();
+//      matrix_print();
       palSetPad(GPIOA, GPIOA_LED);       /* Orange.  */
-      chThdSleepMilliseconds(20);
+      chThdSleepMilliseconds(500);
       palClearPad(GPIOA, GPIOA_LED);       /* Orange.  */
-      chThdSleepMilliseconds(1);
+      chThdSleepMilliseconds(500);
     }
   }
 }
@@ -205,6 +205,6 @@ int main(void) {
 #endif /* MOUSEKEY_ENABLE */
     }
 
-    //keyboard_task();
+    keyboard_task();
   }
 }

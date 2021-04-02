@@ -48,7 +48,7 @@
 #define STM32_HSECLK                8000000U
 #endif
 
-//#define BOARD_OTG_NOVBUSSENS 1
+#define BOARD_OTG_NOVBUSSENS 1
 
 /*
  * Board voltages.
