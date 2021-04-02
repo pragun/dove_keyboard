@@ -104,11 +104,14 @@ static THD_FUNCTION(blinkerThread, arg) {
   chRegSetThreadName("blinkLED");
   while(true) {
     {
-      printf("LED printf.\n");
+      printf("%03d ", blinkLed);
+      blinkLed += 1;
+      matrix_scan();
+      matrix_print();
       palSetPad(GPIOA, GPIOA_LED);       /* Orange.  */
-      chThdSleepMilliseconds(300);
+      chThdSleepMilliseconds(20);
       palClearPad(GPIOA, GPIOA_LED);       /* Orange.  */
-      chThdSleepMilliseconds(400);
+      chThdSleepMilliseconds(1);
     }
   }
 }
@@ -202,6 +205,6 @@ int main(void) {
 #endif /* MOUSEKEY_ENABLE */
     }
 
-    keyboard_task();
+    //keyboard_task();
   }
 }

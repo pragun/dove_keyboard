@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef DEBOUNCE
 #   define DEBOUNCE 5
 #endif
+
 static uint8_t debouncing = DEBOUNCE;
 
 /* matrix state(1:on, 0:off) */
@@ -42,10 +43,10 @@ static void unselect_rows(void);
 static void select_row(uint8_t row);
 
 stm32_gpio_t* row_ports1[] = {GPIOC,GPIOC,GPIOC,GPIOC,GPIOC};
-uint16_t row_pins1[] = {GPIOC_PIN0,GPIOC_PIN1,GPIOC_PIN2,GPIOC_PIN3,GPIOC_PIN4};
+uint16_t row_pins1[] = {GPIOC_PIN0,GPIOC_PIN1,GPIOC_PIN3,GPIOC_PIN2,GPIOC_PIN4};
 
 stm32_gpio_t* row_ports2[] = {GPIOD,GPIOD,GPIOD,GPIOD,GPIOD};
-uint16_t row_pins2[] = {GPIOD_PIN0,GPIOD_PIN1,GPIOD_PIN2,GPIOD_PIN3,GPIOD_PIN4};
+uint16_t row_pins2[] = {GPIOD_PIN1,GPIOD_PIN0,GPIOD_PIN2,GPIOD_PIN3,GPIOD_PIN4};
 
 inline
 uint8_t matrix_rows(void)
@@ -135,12 +136,10 @@ matrix_row_t matrix_get_row(uint8_t row)
 
 void matrix_print(void)
 {
-    print("\nr/c 0123456789ABCDEF\n");
     for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
-        phex(row); print(": ");
-        pbin_reverse16(matrix_get_row(row));
-        print("\n");
+        printf("   %d: %08x|", row, matrix_get_row(row));
     }
+    print("\n");
 }
 
 /* Column pin configuration
@@ -158,8 +157,13 @@ static void  init_cols(void)
 /* Returns status of switches(1:on, 0:off) */
 static matrix_row_t read_cols(void)
 {
-    return ((palReadPad(GPIOB, 8)==PAL_LOW) ? 0 : (1<<0));
-    // | ((palReadPad(...)==PAL_HIGH) ? 0 : (1<<1))
+  uint16_t cols1 = palReadPort(GPIOE);
+  uint16_t cols2 = palReadPort(GPIOD);
+
+  cols1 = ~cols1;
+  cols2 = ~cols2;
+
+  return ((cols1 >> 2) << 11)|(cols2 >> 5);
 }
 
 /* Row pin configuration
