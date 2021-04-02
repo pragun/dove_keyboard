@@ -17,6 +17,7 @@
 
 #include "ch.h"
 #include "hal.h"
+#include "board.h"
 
 #include "usb_main.h"
 
@@ -36,7 +37,7 @@
 #endif
 #include "suspend.h"
 #include "hook.h"
-
+#include "printf.h"
 
 /* -------------------------
  *   TMK host driver defs
@@ -80,25 +81,51 @@ void hook_usb_suspend_loop(void) {
  * Amber LED blinker thread, times are in milliseconds.
  */
 /* set this variable to non-zero anywhere to blink once */
-// uint8_t blinkLed = 0;
-// static THD_WORKING_AREA(waBlinkerThread, 128);
-// static THD_FUNCTION(blinkerThread, arg) {
-//   (void)arg;
-//   chRegSetThreadName("blinkOrange");
-//   while(true) {
-//     if(blinkLed) {
-//       blinkLed = 0;
-//       palSetPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
-//       chThdSleepMilliseconds(100);
-//       palClearPad(TEENSY_PIN13_IOPORT, TEENSY_PIN13);
-//     }
-//     chThdSleepMilliseconds(100);
-//   }
-// }
+//uint8_t blinkLed = 0;
+//static THD_WORKING_AREA(waBlinkerThread, 128);
+//static THD_FUNCTION(blinkerThread, arg) {
+//  (void)arg;
+//  chRegSetThreadName("blinkOrange");
+//  while(true) {
+//    if(blinkLed) {
+//      blinkLed = 0;
+//      palSetPad(GPIOA, GPIOA_LED);       /* Orange.  */
+//      chThdSleepMilliseconds(100);
+//      palClearPad(GPIOA, GPIOA_LED);       /* Orange.  */
+//    }
+//    chThdSleepMilliseconds(100);
+//  }
+//}
+
+uint8_t blinkLed = 0;
+static THD_WORKING_AREA(waBlinkerThread, 128);
+static THD_FUNCTION(blinkerThread, arg) {
+  (void)arg;
+  chRegSetThreadName("blinkLED");
+  while(true) {
+    {
+      sdWrite(&SD2, (int8_t*)"USART2 Initialized.\n", 20);
+      printf("Check printf.\n");
+      palSetPad(GPIOA, GPIOA_LED);       /* Orange.  */
+      chThdSleepMilliseconds(300);
+      palClearPad(GPIOA, GPIOA_LED);       /* Orange.  */
+      chThdSleepMilliseconds(400);
+    }
+  }
+}
 
 void sendchar_uart(void *p, char c) {
 	sdWrite(&SD2, (int8_t*) &c, 1);
 };
+
+
+void _delay_us(uint16_t us){
+    gptStartOneShotI(&GPTD8, 100);
+}
+
+void _delay_ms(uint16_t ms){
+  chThdSleepMilliseconds(1);
+}
 
 
 /* Main thread
@@ -112,11 +139,22 @@ int main(void) {
   palSetPadMode(GPIOA, 2, PAL_MODE_ALTERNATE(7));
   palSetPadMode(GPIOA, 3, PAL_MODE_ALTERNATE(7));
 
-  sdWrite(&SD2, (int8_t*)"Hohoho\r\n", 8);
-  chThdSleepMilliseconds(500);
+  sdWrite(&SD2, (int8_t*)"USART2 Initialized.\n", 20);
+  chThdSleepMilliseconds(10);
+  init_printf(NULL,sendchar_uart);
+
+
+  static const GPTConfig gpt8cfg = {
+    100000, // 1 MHz timer clock.
+    NULL, // No callback
+    0, 0
+  };
+
+  gptStart(&GPTD8, &gpt8cfg);
+  gptPolledDelay(&GPTD8, 10); // 10 us delay
 
   // TESTING
-  // chThdCreateStatic(waBlinkerThread, sizeof(waBlinkerThread), NORMALPRIO, blinkerThread, NULL);
+  chThdCreateStatic(waBlinkerThread, sizeof(waBlinkerThread), NORMALPRIO, blinkerThread, NULL);
 
   hook_early_init();
 
@@ -124,7 +162,6 @@ int main(void) {
   init_usb_driver(&USB_DRIVER);
 
   /* init printf */
-  init_printf(NULL,sendchar_uart);
 
   /* Wait until the USB is active */
   while(USB_DRIVER.state != USB_ACTIVE)
@@ -137,7 +174,7 @@ int main(void) {
    */
   chThdSleepMilliseconds(50);
 
-  print("USB configured.\n");
+  printf("USB configured.\n");
 
   /* init TMK modules */
   keyboard_init();
