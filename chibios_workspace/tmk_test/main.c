@@ -143,7 +143,8 @@ int main(void) {
   init_printf(NULL,sendchar_uart);
 
   printf("USART2 Initialized.\n");
-  chThdSleepMilliseconds(10);
+  dprintln("Checking Debug Prints..");
+  chThdSleepMilliseconds(50);
 
   static const GPTConfig gpt8cfg = {
     100000, // 1 MHz timer clock.
@@ -193,7 +194,7 @@ int main(void) {
   while(true) {
 
     if(USB_DRIVER.state == USB_SUSPENDED) {
-      print("[s]");
+      printf("[s]");
       while(USB_DRIVER.state == USB_SUSPENDED) {
         hook_usb_suspend_loop();
       }

@@ -68,12 +68,12 @@ CONFIG_H = $(CONFDIR)/config.h
 #
 #BOOTMAGIC_ENABLE = yes	# Virtual DIP switch configuration
 ## BOOTMAGIC is not supported on STM32 chips yet.
-MOUSEKEY_ENABLE = yes	# Mouse keys
-EXTRAKEY_ENABLE = yes	# Audio control and System control
-CONSOLE_ENABLE = yes	# Console for debug
-COMMAND_ENABLE = yes    # Commands for debug and configuration
-SLEEP_LED_ENABLE = no   # Breathing sleep LED during USB suspend
-NKRO_ENABLE = no	    # USB Nkey Rollover
+MOUSEKEY_ENABLE = no	# Mouse keys
+EXTRAKEY_ENABLE = no	# Audio control and System control
+#CONSOLE_ENABLE = no	# Console for debug
+#COMMAND_ENABLE = no    # Commands for debug and configuration
+#SLEEP_LED_ENABLE = no   # Breathing sleep LED during USB suspend
+#NKRO_ENABLE = no	    # USB Nkey Rollover
 
 
 COMMON_DIR = $(TMK_DIR)/common
@@ -115,8 +115,8 @@ endif
 ifdef CONSOLE_ENABLE
     OPT_DEFS += -DCONSOLE_ENABLE
 else
-    OPT_DEFS += -DNO_PRINT
-    OPT_DEFS += -DNO_DEBUG
+#    OPT_DEFS += -DNO_PRINT
+#    OPT_DEFS += -DNO_DEBUG
 endif
 
 ifdef COMMAND_ENABLE
