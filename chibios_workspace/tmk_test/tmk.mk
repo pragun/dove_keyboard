@@ -156,7 +156,7 @@ ifdef KEYMAP_SECTION_ENABLE
 endif
 
 OPT_DEFS += -DPROTOCOL_CHIBIOS
-OPT_DEFS += -DDEBUG_ACTION
+# OPT_DEFS += -DDEBUG_ACTION
 
 # Version string
 # OPT_DEFS += -DVERSION=$(shell (git describe --always --dirty || echo 'unknown') 2> /dev/null)
