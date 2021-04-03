@@ -5012,3 +5012,5 @@
 2021-04-02 09:45:54,876 [INFO] DbMcusDocs:81 - Found 617 MCUs documents
 2021-04-02 09:49:07,090 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 390872536 Bytes (502267904)
 2021-04-02 13:34:25,940 [INFO] Gpio:248 - dependency for GPIO [SPI1, SPI3, USART1, USART2, USB_OTG_FS, USB_OTG_HS]
+2021-04-02 16:04:06,565 [INFO] Gpio:248 - dependency for GPIO [SPI1, SPI3, USART1, USART2, USB_OTG_FS, USB_OTG_HS]
+2021-04-02 16:04:25,128 [INFO] Mcu:1477 - InternalPropertyChange: try BijectiveRequest:Activate VBUS
