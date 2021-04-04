@@ -62,8 +62,8 @@ const uint8_t keymaps[][5][25] = {
 };
 
 const action_t fn_actions[] = {
-  ACTION_LAYER_TOGGLE(1),
-  ACTION_LAYER_TOGGLE(2),
+   ACTION_LAYER_TAP_TOGGLE(1),
+   ACTION_LAYER_TAP_TOGGLE(2),
 };
 
 
