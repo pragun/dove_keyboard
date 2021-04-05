@@ -1,5 +1,5 @@
 ## Firmware for the Dove Mechanical Keyboard
-It uses TMK for the keyboard & USB HID, and ChibiOS as the HAL for STM32F407. 
+This is the home of the firmware for my Dove Mechanical Keyboard. It uses TMK for the keyboard & USB HID, and ChibiOS as the HAL for STM32F407. 
 This project uses a slightly different organization as described in the [tmk documentation](https://github.com/tmk/tmk_core/blob/master/README.md). The differences are 
 1. It uses a Makefile derived from a ChibiOs example rather than the one used in `tmk/tmk_core/tool/chibios.mk`,
 2. It is based on a ChibiOS demo, so it can be used from within ChibiStudio for debugging.
