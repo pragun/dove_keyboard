@@ -16,13 +16,13 @@ cd ChibiOS
 git checkout --track origin/stable_20.3
 ```
 4. Clone this repo in the `dove_keyboard_wspace`.
-5. Your `dove_keyboard_wspace` should now have two folder in it
+5. Your `dove_keyboard_wspace` folder should now have two folders in it
 ```
 ChibiOS -- checked out to branch 20.3
 dove_keyboard_fw
 ```
-6. Run ChibiStudio using gcc90
+6. Run ChibiStudio (making sure to select gcc90 launcher)
 7. Open the workspace `dove_keyboard_wspace` as a workspace within ChibiStudio
-8. Import ChibiOs as an 'existing project'. File > Import > Existing Projects into Workspace. I recommend unchecking 'Search for nested projects' to avoid littering your workspace with all the demo projects that ChibiOS comes with.
-9. Import `dove_keyboard_fw` as an existing project as well.
+8. Import ChibiOs as an 'existing project' by selecting File > Import > Existing Projects into Workspace. I recommend unchecking 'Search for nested projects' to avoid littering your workspace with all the demo projects that ChibiOS comes with.
+9. Import `dove_keyboard_fw` as an existing project using the same steps as above.
 10. You can build, debug, flash, etc on your STM32F407 board as described in this excellent tutorial on [Using ChibiStudio at playembeddded](https://www.playembedded.org/blog/debugging-stm32-chibistudio/)
