@@ -1,7 +1,0 @@
-/.metadata/
-/chibios203/
-/uart_test/
-*.o
-*.elf
-*build/
-
